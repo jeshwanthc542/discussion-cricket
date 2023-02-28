@@ -18,6 +18,7 @@ const initializeAndServer = async () => {
     });
   } catch (err) {
     console.log(`DB error ${err.message}`);
+    process.exit(1);
   }
 };
 
@@ -25,7 +26,7 @@ initializeAndServer();
 
 //API GET DETAILS
 app.get("/players/", async (request, response) => {
-  const getQuery = `select * from player_details;`;
+  const getQuery = `select * from player_details order by player_id;`;
   const result = await db.all(getQuery);
   response.send(result);
 });
@@ -48,5 +49,5 @@ app.put("/players/:playerId/", async (request, response) => {
     player_name = '${playerName}'
     WHERE player_id = ${playerId};`;
   await db.run(getQuery);
-  response.send("Player Details Updated");
+  response.send("Player Updated Successfully");
 });
